@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:rabieaomran/features/post/domain/entities/post_entity.dart';
-import 'package:rabieaomran/global/errors/failures.dart';
+import 'package:sllc/features/post/domain/entities/post_entity.dart';
+import 'package:sllc/global/errors/failures.dart';
 
 abstract class PostsRepoDomain{
   Future <Either<Failure,List<PostEntity>>> getAllPosts();

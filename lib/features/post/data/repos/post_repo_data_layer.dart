@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:rabieaomran/features/post/data/models/post_model_data_layer.dart';
-import 'package:rabieaomran/features/post/domain/entities/post_entity.dart';
-import 'package:rabieaomran/features/post/domain/repo/posts_repo_domain.dart';
-import 'package:rabieaomran/global/errors/failures.dart';
+import 'package:sllc/features/post/data/models/post_model_data_layer.dart';
+import 'package:sllc/features/post/domain/entities/post_entity.dart';
+import 'package:sllc/features/post/domain/repo/posts_repo_domain.dart';
+import 'package:sllc/global/errors/failures.dart';
 
 class PostRepoImpl implements PostsRepoDomain{
   @override
