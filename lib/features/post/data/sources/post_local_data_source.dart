@@ -19,10 +19,11 @@ class PostLocalDataSourceImpl implements PostLocalDataSource {
   PostLocalDataSourceImpl({required this.sharedPreferences});
   @override
   Future<Unit> cachePosts(List<PostModelDataLayer> PostModelDataLayers) {
-    List PostModelDataLayersToJson = PostModelDataLayers
-        .map<Map<String, dynamic>>((PostModelDataLayer) => PostModelDataLayer.toJson())
-        .toList();
-    sharedPreferences.setString(CACHED_POSTS, json.encode(PostModelDataLayersToJson));
+    List PostModelDataLayersToJson =
+        PostModelDataLayers.map<Map<String, dynamic>>(
+            (PostModelDataLayer) => PostModelDataLayer.toJson()).toList();
+    sharedPreferences.setString(
+        CACHED_POSTS, json.encode(PostModelDataLayersToJson));
     return Future.value(unit);
   }
 
@@ -32,7 +33,8 @@ class PostLocalDataSourceImpl implements PostLocalDataSource {
     if (jsonString != null) {
       List decodeJsonData = json.decode(jsonString);
       List<PostModelDataLayer> jsonToPostModelDataLayers = decodeJsonData
-          .map<PostModelDataLayer>((jsonPostModelDataLayer) => PostModelDataLayer.fromJson(jsonPostModelDataLayer))
+          .map<PostModelDataLayer>((jsonPostModelDataLayer) =>
+              PostModelDataLayer.fromJson(jsonPostModelDataLayer))
           .toList();
       return Future.value(jsonToPostModelDataLayers);
     } else {

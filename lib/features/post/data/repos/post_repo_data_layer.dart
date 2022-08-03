@@ -8,6 +8,8 @@ import 'package:sllc/global/errors/exeptions.dart';
 import 'package:sllc/global/errors/failures.dart';
 import 'package:sllc/global/network/check_connection.dart';
 
+typedef Future<Unit> DeleteOrUpdateOrAddPost();
+
 class PostRepoImpl implements PostsRepoDomain {
   final PostLocalDataSource postLocalDataSource;
   final PostRemoteDataSource postRemoteDataSource;
@@ -42,47 +44,26 @@ class PostRepoImpl implements PostsRepoDomain {
   Future<Either<Failure, Unit>> createPosts(PostEntity postEntity) async {
     PostModelDataLayer postModelDataLayer = PostModelDataLayer(
         id: postEntity.id, title: postEntity.title, body: postEntity.body);
-    if (await networkInfo.isConnected) {
-      try {
-        await postRemoteDataSource.addPost(postModelDataLayer);
-        return const Right(unit);
-      } on ServerException {
-        return Left(ServerFailure());
-      }
-    } else {
-      return Left(OfflineFailure());
-    }
+    return await callMethod(() {
+      return postRemoteDataSource.addPost(postModelDataLayer);
+    });
   }
 
   @override
   Future<Either<Failure, Unit>> updatePostsById(PostEntity postEntity) async {
     PostModelDataLayer postModelDataLayer = PostModelDataLayer(
         id: postEntity.id, title: postEntity.title, body: postEntity.body);
-    if (await networkInfo.isConnected) {
-      try {
-        await postRemoteDataSource.updatePost(postModelDataLayer);
-        return const Right(unit);
-      } on ServerException {
-        return Left(ServerFailure());
-      }
-    } else {
-      return Left(OfflineFailure());
-    }
+
+    return await callMethod(() {
+      return postRemoteDataSource.updatePost(postModelDataLayer);
+    });
   }
 
   @override
   Future<Either<Failure, Unit>> deletePostsById(int postId) async {
-
-    if (await networkInfo.isConnected) {
-      try {
-        await postRemoteDataSource.deletePost(postId);
-        return const Right(unit);
-      } on ServerException {
-        return Left(ServerFailure());
-      }
-    } else {
-      return Left(OfflineFailure());
-    }
+    return await callMethod(() {
+      return postRemoteDataSource.deletePost(postId);
+    });
   }
 
   @override
@@ -91,4 +72,17 @@ class PostRepoImpl implements PostsRepoDomain {
     throw UnimplementedError();
   }
 
+  Future<Either<Failure, Unit>> callMethod(
+      DeleteOrUpdateOrAddPost deleteOrUpdateOrAddPost) async {
+    if (await networkInfo.isConnected) {
+      try {
+        await deleteOrUpdateOrAddPost();
+        return const Right(unit);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
 }

@@ -29,7 +29,8 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     if (response.statusCode == 200) {
       final List decodedJson = json.decode(response.body) as List;
       final List<PostModelDataLayer> postModels = decodedJson
-          .map<PostModelDataLayer>((jsonPostModelDataLayer) => PostModelDataLayer.fromJson(jsonPostModelDataLayer))
+          .map<PostModelDataLayer>((jsonPostModelDataLayer) =>
+              PostModelDataLayer.fromJson(jsonPostModelDataLayer))
           .toList();
 
       return postModels;
@@ -46,7 +47,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     };
 
     final response =
-    await client.post(Uri.parse(BASE_URL + "/posts/"), body: body);
+        await client.post(Uri.parse(BASE_URL + "/posts/"), body: body);
 
     if (response.statusCode == 201) {
       return Future.value(unit);
